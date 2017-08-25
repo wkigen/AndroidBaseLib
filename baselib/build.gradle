@@ -1,0 +1,145 @@
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral() // jcenter() works as well because it pulls from Maven Central
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+}
+
+def siteUrl = 'https://github.com/wkigen/BaseLib'
+// 项目的主页
+def gitUrl = 'https://github.com/wkigen/BaseLib'
+
+group = 'com.vicky.android'
+version = '0.0.1'
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'baselib' //项目描述
+                // Set your license
+                licenses {
+                    license {
+                        name ''
+                        url ''
+                    }
+                }
+                developers {
+                    developer {
+                        id 'baselib' //填写的一些基本信息
+                        name project.name
+                        email 'qiji950@163.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+Properties properties = new Properties()
+def file = project.rootProject.file('local.properties')
+if (file.exists()) {
+    properties.load(file.newDataInputStream())
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+//    configurations = ['archives']
+    publications = ['maven']
+    pkg {
+        repo = "maven"
+        name = project.name	//发布到JCenter上的项目名字
+        websiteUrl = "https://github.com/wkigen/BaseLib"
+        vcsUrl = gitUrl
+        licenses = [""]
+        publish = true
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from('src/main/java') {
+        include '**'
+    }
+    classifier = 'sources'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
+            artifact sourcesJar
+        }
+    }
+    repositories {
+        mavenLocal()
+//        maven {
+//            url "url"
+//            credentials {
+//                username = "xxx"
+//                password = "xxx"
+//            }
+//        }
+    }
+}

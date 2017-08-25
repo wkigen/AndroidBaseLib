@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- toast-->
+    <color name="toast_bg_color">#cc000000</color>
+    <color name="window_background">#eeeeee</color>
+    <color name="theme_black_7f">#8f000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="base_lib_theme_blue">#51c5d4</color>
+    <color name="base_lib_title_fond_color">#ffffff</color>
+
+    <!--title-->
+    <color name="title_c1">#ffffff</color>
+    <color name="title_c3">#dfdfdf</color>
+    <color name="title_c4">#8fff</color>
+    <color name="title_c8">#26b14c</color>
+    <color name="baselib_line">#dfdfdf</color>
+
+    <color name="assist_color_green">#28ac56</color>
+</resources>

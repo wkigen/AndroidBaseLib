@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">baselib</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="lib_cancel">取消</string>
+    <string name="lib_sure">确认</string>
+    <string name="lib_loading">加载中</string>
+
+    <string name="back">返回</string>
+</resources>
