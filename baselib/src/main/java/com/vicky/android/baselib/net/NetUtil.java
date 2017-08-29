@@ -8,6 +8,7 @@ import com.vicky.android.baselib.http.annotation.GET;
 import com.vicky.android.baselib.http.annotation.PARAMS;
 import com.vicky.android.baselib.http.annotation.POST;
 import com.vicky.android.baselib.http.annotation.POSTJSON;
+import com.vicky.android.baselib.utils.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.GenericSignatureFormatError;
@@ -19,24 +20,19 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 
 @SuppressWarnings("all")
 public class NetUtil implements InvocationHandler {
 
-    public NetUtil() {
-    }
+    private static IHandleHttpParams handleParams;
+    private static Map<String,String> headMap;
 
-    public static String getRandomString(int length) { //length表示生成字符串的长度
-        String base = "abcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int number = random.nextInt(base.length());
-            sb.append(base.charAt(number));
-        }
-        return sb.toString();
+    public NetUtil(IHandleHttpParams handle,Map<String,String> hMap) {
+        handleParams = handle;
+        headMap = hMap;
     }
 
     public static List<String> getMethodParameterNamesByAnnotation(Method method) {
@@ -45,6 +41,7 @@ public class NetUtil implements InvocationHandler {
             return new ArrayList<>();
         }
         List<String> parameteNames = new ArrayList<>();
+
         int i = 0;
         for (Annotation[] parameterAnnotation : parameterAnnotations) {
             for (Annotation annotation : parameterAnnotation) {
@@ -62,21 +59,24 @@ public class NetUtil implements InvocationHandler {
 
         RequestCall requestCall = null;
 
-        HashMap<String,String> params =  defaultProcess(method,args);
+        Map<String,String> params =  defaultProcess(method,args);
+
+        if (handleParams != null)
+            params = handleParams.handleParams(params);
 
         if (method.isAnnotationPresent(POST.class)) {
             POST post = method.getAnnotation(POST.class);
-            requestCall = OkHttpUtils.post().url(post.value()).params(params).build();
+            requestCall = OkHttpUtils.post().url(StringUtils.addHttpPrefix(post.value())).params(params).headers(headMap).build();
         }
 
         if (method.isAnnotationPresent(GET.class)) {
-            GET post = method.getAnnotation(GET.class);
-            requestCall = OkHttpUtils.get().url(post.value()).params(params).build();
+            GET get = method.getAnnotation(GET.class);
+            requestCall = OkHttpUtils.get().url(StringUtils.addHttpPrefix(get.value())).params(params).headers(headMap).build();
         }
 
         if (method.isAnnotationPresent(POSTJSON.class)) {
             POSTJSON postjson = method.getAnnotation(POSTJSON.class);
-            requestCall = OkHttpUtils.postString().url(postjson.value()).content(JSON.toJSONString(params)).build();
+            requestCall = OkHttpUtils.postString().url(StringUtils.addHttpPrefix(postjson.value())).headers(headMap).content(JSON.toJSONString(params)).build();
         }
 
         if (requestCall == null)
@@ -127,5 +127,4 @@ public class NetUtil implements InvocationHandler {
     private String jsonReplace(Object object){
         return JSON.toJSONString(object, true).replace("\\\"", "\"").replace("\"[", "[").replace("]\"", "]");
     }
-
 }
