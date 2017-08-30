@@ -63,7 +63,7 @@ public abstract class BaseLibActivity<T extends IView, RM extends AbstractViewMo
 
     @Override
     protected void setStatusBar() {
-        StatusBarUtil.setColor(this, R.color.toast_bg_color);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.base_lib_theme_red),0);
     }
 
     @Override

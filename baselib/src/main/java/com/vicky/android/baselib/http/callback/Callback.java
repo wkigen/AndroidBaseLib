@@ -1,11 +1,22 @@
 package com.vicky.android.baselib.http.callback;
 
+import com.vicky.android.baselib.mvvm.INetView;
+import com.vicky.android.baselib.mvvm.IView;
+
+import java.lang.reflect.Type;
+
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public abstract class Callback<T>
 {
+    protected INetView iView;
+
+    public void showProgress(INetView iView){
+        this.iView = iView;
+    }
+
     /**
      * UI Thread
      *
@@ -13,6 +24,8 @@ public abstract class Callback<T>
      */
     public void onBefore(Request request, int id)
     {
+        if (iView != null)
+            iView.showLoadingView(null);
     }
 
     /**
@@ -22,6 +35,8 @@ public abstract class Callback<T>
      */
     public void onAfter(int id)
     {
+        if (iView != null)
+            iView.dissmissLoadingView();
     }
 
     /**

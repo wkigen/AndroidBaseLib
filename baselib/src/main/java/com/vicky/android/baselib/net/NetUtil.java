@@ -85,23 +85,6 @@ public class NetUtil implements InvocationHandler {
         return requestCall;
     }
 
-    private Type[] getTType(Method method) {
-        Type[] types = null;
-        try {
-            Type returnType = method.getGenericReturnType();// 返回类型
-            types = ((ParameterizedType) returnType).getActualTypeArguments();
-        } catch (GenericSignatureFormatError error) {
-            error.printStackTrace();
-        } catch (TypeNotPresentException e) {
-            e.printStackTrace();
-        } catch (MalformedParameterizedTypeException e) {
-            e.printStackTrace();
-        } catch (ClassCastException e) {
-        }
-        return types;
-    }
-
-
     private HashMap<String,String> defaultProcess(Method method, Object[] objs) {
 
         HashMap<String,String> httpParams = new HashMap<String,String>();

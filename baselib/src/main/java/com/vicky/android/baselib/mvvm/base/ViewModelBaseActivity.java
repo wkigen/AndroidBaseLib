@@ -1,13 +1,19 @@
 package com.vicky.android.baselib.mvvm.base;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.TransitionRes;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 
 import com.vicky.android.baselib.R;
 import com.vicky.android.baselib.ActivityManager;
@@ -29,6 +35,9 @@ public abstract class ViewModelBaseActivity<T extends IView, RM extends Abstract
     protected VaryViewHelper mVaryViewHelper;
     protected HttpNetLoadingViewHelper httpNetLoadingViewHelper;
 
+    @TransitionRes
+    protected int enterTransition,exitTransition ,reenterTransition;
+
     public HttpNetLoadingViewHelper getLoadingViewHelper() {
         if(httpNetLoadingViewHelper == null){
             httpNetLoadingViewHelper = new BaseLoadingViewHelper(this);
@@ -41,6 +50,9 @@ public abstract class ViewModelBaseActivity<T extends IView, RM extends Abstract
         super.onCreate(savedInstanceState);
         mViewModeHelper.onCreate(this, savedInstanceState, getViewModelClass(), getIntent().getExtras());
         mContext = this;
+
+        activityTransition();
+
         setContentView(tellMeLayout());
         ActivityManager.getAppManager().addActivity(this);
         //bundle
@@ -93,6 +105,32 @@ public abstract class ViewModelBaseActivity<T extends IView, RM extends Abstract
     protected abstract void initView(Bundle savedInstanceState);
 
     protected abstract int tellMeLayout();
+
+    protected void setActivityTransition(){};
+
+    @TargetApi(21)
+    protected void activityTransition(){
+
+        setActivityTransition();
+
+        if (enterTransition != 0 || exitTransition != 0 || reenterTransition!=0)
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+        if (enterTransition > 0){
+            Transition enterT = TransitionInflater.from(this).inflateTransition(enterTransition);
+            getWindow().setEnterTransition(enterT);
+        }
+
+        if (exitTransition > 0){
+            Transition exitT = TransitionInflater.from(this).inflateTransition(exitTransition);
+            getWindow().setExitTransition(exitT);
+        }
+
+        if (reenterTransition > 0){
+            Transition reenterT = TransitionInflater.from(this).inflateTransition(reenterTransition);
+            getWindow().setReenterTransition(reenterT);
+        }
+    }
 
     /**
      * Rewrite this method defines the network status view
@@ -221,5 +259,10 @@ public abstract class ViewModelBaseActivity<T extends IView, RM extends Abstract
             intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
+    }
+
+    final public void readyGoForTransitionAnimation(Class<?> clazz) {
+        Intent intent = new Intent(this, clazz);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }

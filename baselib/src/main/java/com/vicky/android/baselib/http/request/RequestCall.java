@@ -2,8 +2,11 @@ package com.vicky.android.baselib.http.request;
 
 import com.vicky.android.baselib.http.OkHttpUtils;
 import com.vicky.android.baselib.http.callback.Callback;
+import com.vicky.android.baselib.mvvm.INetView;
+import com.vicky.android.baselib.mvvm.IView;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -17,6 +20,9 @@ import okhttp3.Response;
  */
 public class RequestCall
 {
+
+    private INetView iView;
+
     private OkHttpRequest okHttpRequest;
     private Request request;
     private Call call;
@@ -30,6 +36,11 @@ public class RequestCall
     public RequestCall(OkHttpRequest request)
     {
         this.okHttpRequest = request;
+    }
+
+    public RequestCall showProgress(IView iView){
+        this.iView = iView;
+        return this;
     }
 
     public RequestCall readTimeOut(long readTimeOut)
@@ -81,6 +92,9 @@ public class RequestCall
 
     public void execute(Callback callback)
     {
+        if (iView != null)
+            callback.showProgress(iView);
+
         buildCall(callback);
 
         if (callback != null)
