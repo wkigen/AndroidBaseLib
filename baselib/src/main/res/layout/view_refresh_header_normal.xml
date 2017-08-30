@@ -18,7 +18,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
-            android:src="@mipmap/yd_refresh_head_arrow" />
+            android:src="@mipmap/refresh_head_arrow" />
 
         <ImageView
             android:id="@+id/iv_normal_refresh_header_chrysanthemum"

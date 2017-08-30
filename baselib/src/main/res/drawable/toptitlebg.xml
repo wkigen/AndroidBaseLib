@@ -3,5 +3,5 @@
     >
     <!-- 渐变 -->
 
-    <solid  android:color="@color/base_lib_theme_blue"  />
+    <solid  android:color="@color/base_lib_theme_red"  />
 </shape>

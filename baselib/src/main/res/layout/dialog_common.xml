@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:textColor="@color/base_lib_theme_blue"
+            android:textColor="@color/base_lib_theme_red"
             android:textSize="17sp"
             android:visibility="gone" />
 
@@ -132,7 +132,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/lib_sure"
-                android:textColor="@color/base_lib_theme_blue"
+                android:textColor="@color/base_lib_theme_red"
                 android:textSize="17sp" />
 
 
