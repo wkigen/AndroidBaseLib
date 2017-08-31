@@ -2,6 +2,7 @@ package com.vicky.android.baselib.net;
 
 import com.alibaba.fastjson.JSON;
 import com.vicky.android.baselib.http.OkHttpUtils;
+import com.vicky.android.baselib.http.annotation.FILE;
 import com.vicky.android.baselib.http.annotation.POSTENCRYPT;
 import com.vicky.android.baselib.http.request.RequestCall;
 import com.vicky.android.baselib.http.utils.Exceptions;
@@ -82,6 +83,14 @@ public class NetUtil implements InvocationHandler {
             if (handleParams != null)
                 params = handleParams.handleParams(params);
             requestCall = OkHttpUtils.post().url(StringUtils.addHttpPrefix(postjson.value())).params(params).headers(headMap).build();
+        }
+
+        if (method.isAnnotationPresent(FILE.class)){
+            FILE postjson = method.getAnnotation(FILE.class);
+            String url = params.get("url");
+            if (url != null){
+                requestCall = OkHttpUtils.get().url(StringUtils.addHttpPrefix(url)).headers(headMap).build();
+            }
         }
 
         if (requestCall == null)
