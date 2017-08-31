@@ -3,10 +3,10 @@ package com.vicky.android.baselib.widget.viewloading;
 import android.content.Context;
 
 import com.vicky.android.baselib.R;
-import com.vicky.android.baselib.widget.TipDialog;
+import com.vicky.android.baselib.widget.LoadingBox;
 
 public class BaseLoadingViewHelper implements HttpNetLoadingViewHelper {
-    TipDialog mTipdialog;
+    LoadingBox loadingBox;
     int numberOfRequest = 0;
 
     public BaseLoadingViewHelper(Context context){
@@ -14,20 +14,18 @@ public class BaseLoadingViewHelper implements HttpNetLoadingViewHelper {
     }
 
     public void init(Context context) {
-        mTipdialog = new TipDialog(context, TipDialog.TYPE_PB);
-        mTipdialog.setTipText(context.getString(R.string.lib_loading));
-        mTipdialog.setCanceledOnTouchOutside(false);
+        loadingBox = new LoadingBox(context);
+        loadingBox.setCanceledOnTouchOutside(false);
     }
 
     public void setLoadingText(String loadingText){
-        mTipdialog.setTipText(loadingText);
+        loadingBox.setText(loadingText);
     }
     @Override
     public void showLoadingView() {
         if(numberOfRequest == 0){
             try {
-                mTipdialog.show();
-                mTipdialog.setTagIvAnimation();
+                loadingBox.show();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -40,10 +38,9 @@ public class BaseLoadingViewHelper implements HttpNetLoadingViewHelper {
         numberOfRequest--;
         if(numberOfRequest<0)
             numberOfRequest = 0;
-        if(numberOfRequest == 0&&mTipdialog.isShowing()){
+        if(numberOfRequest == 0&&loadingBox.isShowing()){
             try {
-                mTipdialog.dismiss();
-                mTipdialog.cancleAnimation();
+                loadingBox.dismiss();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -53,8 +50,8 @@ public class BaseLoadingViewHelper implements HttpNetLoadingViewHelper {
 
     @Override
     public void clearView() {
-        if(mTipdialog!=null&&mTipdialog.isShowing())
-            mTipdialog.dismiss();
+        if(loadingBox!=null&&loadingBox.isShowing())
+            loadingBox.dismiss();
     }
 
 }

@@ -11,9 +11,10 @@
     <color name="base_lib_theme_red">#d23023</color>
 
     <!--title-->
-    <color name="title_c1">#ffffff</color>
     <color name="title_c3">#dfdfdf</color>
     <color name="title_c4">#8fff</color>
     <color name="baselib_line">#dfdfdf</color>
+
+    <color name="text_base_mian">#333333</color>
 
 </resources>
