@@ -2,6 +2,7 @@ package com.vicky.android.baselib.net;
 
 import com.alibaba.fastjson.JSON;
 import com.vicky.android.baselib.http.OkHttpUtils;
+import com.vicky.android.baselib.http.annotation.POSTENCRYPT;
 import com.vicky.android.baselib.http.request.RequestCall;
 import com.vicky.android.baselib.http.utils.Exceptions;
 import com.vicky.android.baselib.http.annotation.GET;
@@ -61,9 +62,6 @@ public class NetUtil implements InvocationHandler {
 
         Map<String,String> params =  defaultProcess(method,args);
 
-        if (handleParams != null)
-            params = handleParams.handleParams(params);
-
         if (method.isAnnotationPresent(POST.class)) {
             POST post = method.getAnnotation(POST.class);
             requestCall = OkHttpUtils.post().url(StringUtils.addHttpPrefix(post.value())).params(params).headers(headMap).build();
@@ -77,6 +75,13 @@ public class NetUtil implements InvocationHandler {
         if (method.isAnnotationPresent(POSTJSON.class)) {
             POSTJSON postjson = method.getAnnotation(POSTJSON.class);
             requestCall = OkHttpUtils.postString().url(StringUtils.addHttpPrefix(postjson.value())).headers(headMap).content(JSON.toJSONString(params)).build();
+        }
+
+        if (method.isAnnotationPresent(POSTENCRYPT.class)) {
+            POSTENCRYPT postjson = method.getAnnotation(POSTENCRYPT.class);
+            if (handleParams != null)
+                params = handleParams.handleParams(params);
+            requestCall = OkHttpUtils.post().url(StringUtils.addHttpPrefix(postjson.value())).params(params).headers(headMap).build();
         }
 
         if (requestCall == null)

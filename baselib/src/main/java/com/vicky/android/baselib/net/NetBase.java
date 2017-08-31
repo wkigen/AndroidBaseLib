@@ -17,7 +17,6 @@ public class NetBase {
                 .addInterceptor(new LoggerInterceptor(NetBase.class.getSimpleName()))
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                        //其他配置
                 .build();
 
         OkHttpUtils.initClient(okHttpClient);
