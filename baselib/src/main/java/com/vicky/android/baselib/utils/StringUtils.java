@@ -7,6 +7,10 @@ import java.util.Random;
  */
 public class StringUtils {
 
+    public static boolean hasHttpPrefix(String src){
+        return src.startsWith("http://");
+    }
+
     public static String addHttpPrefix(String src){
         if (!src.startsWith("http://")){
             return "http://" + src;
