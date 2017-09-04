@@ -1,11 +1,15 @@
 package com.vicky.android.baselib.utils;
 
+import java.util.Date;
 import java.util.Random;
 
 /**
  * Created by vicky on 2017/8/29.
  */
 public class StringUtils {
+
+    static final int c_second = 1 * 1000;
+    static final int c_minute = 60 * c_second;
 
     public static boolean hasHttpPrefix(String src){
         return src.startsWith("http://");
@@ -28,4 +32,19 @@ public class StringUtils {
         }
         return builder.toString();
     }
+
+
+    public static String getMinuteSecond(int millsecond){
+        int temp = millsecond % c_minute;
+        int second = temp / c_second;
+        int minute = ( millsecond - temp) / c_minute;
+        String s_second = second+"";
+        String s_minute = minute+"";
+        if(second < 10)
+            s_second = "0"+s_second;
+        if(minute < 10)
+            s_minute = "0"+s_minute;
+        return s_minute+":"+s_second;
+    }
+
 }
