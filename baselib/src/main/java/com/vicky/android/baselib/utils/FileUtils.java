@@ -2,8 +2,15 @@ package com.vicky.android.baselib.utils;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by vicky on 2017/8/31.
@@ -32,4 +39,42 @@ public class FileUtils {
         return true;
     }
 
+    public static void saveStringToFile(String str, String path){
+        try{
+            FileOutputStream outputStream = new FileOutputStream(path);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+            bufferedWriter.write(str);
+            bufferedWriter.close();
+            outputStreamWriter.close();
+            outputStream.close();
+        }catch (Exception e){
+        }
+    }
+
+    public static String getStringFromFile(String path){
+        try{
+            FileInputStream inputStream = new FileInputStream(path);
+            InputStreamReader inputReader = new InputStreamReader(inputStream );
+            BufferedReader bufferedReader = new BufferedReader(inputReader);
+            String line="";
+            String result="";
+            while((line = bufferedReader.readLine()) != null){
+                if(line.trim().equals(""))
+                    continue;
+                result += line + "\r\n";
+            }
+            return result;
+        }catch (Exception E){
+        }
+        return "";
+    }
+
+    public static boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.isFile() && file.exists()) {
+            return file.delete();
+        }
+        return false;
+    }
 }
