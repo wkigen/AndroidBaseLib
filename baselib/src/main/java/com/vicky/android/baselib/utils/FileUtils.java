@@ -78,6 +78,31 @@ public class FileUtils {
         return false;
     }
 
+    public static void deleteAllFiles(String root) {
+        File rootFile = new File(root);
+        if (!rootFile.exists())
+            return;
+        File files[] = rootFile.listFiles();
+        if (files != null)
+            for (File f : files) {
+                if (f.isDirectory()) { // 判断是否为文件夹
+                    deleteAllFiles(f.getAbsolutePath());
+                    try {
+                        f.delete();
+                    } catch (Exception e) {
+                    }
+                } else {
+                    if (f.exists()) { // 判断是否存在
+                        deleteAllFiles(f.getAbsolutePath());
+                        try {
+                            f.delete();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+            }
+    }
+
     public static void coypFile(String srcFilePath,String desFilePath){
 
         try {
