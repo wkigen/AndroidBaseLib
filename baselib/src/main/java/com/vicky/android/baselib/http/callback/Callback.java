@@ -50,6 +50,15 @@ public abstract class Callback<T>
     }
 
     /**
+     * Thread Pool Thread
+     *
+     * @param
+     */
+    public void readData(byte[] buf,int len,long sum){
+
+    }
+
+    /**
      * if you parse reponse code in parseNetworkResponse, you should make this method return true.
      *
      * @param response

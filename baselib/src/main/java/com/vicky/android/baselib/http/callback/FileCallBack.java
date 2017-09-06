@@ -65,12 +65,12 @@ public abstract class FileCallBack extends Callback<File>
                 sum += len;
                 fos.write(buf, 0, len);
                 final long finalSum = sum;
+                readData(buf,len,finalSum);
                 OkHttpUtils.getInstance().getDelivery().execute(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-
                         inProgress(finalSum * 1.0f / total,total,id);
                     }
                 });

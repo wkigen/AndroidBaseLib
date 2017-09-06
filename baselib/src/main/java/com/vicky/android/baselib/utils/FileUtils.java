@@ -77,4 +77,33 @@ public class FileUtils {
         }
         return false;
     }
+
+    public static void coypFile(String srcFilePath,String desFilePath){
+
+        try {
+            if (!isExistsFile(srcFilePath))
+                return;
+
+            FileInputStream fileInputStream = new FileInputStream(srcFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(desFilePath);
+
+            byte[] buffer = new byte[2048];
+            int len = 0;
+            while ((len = fileInputStream.read(buffer)) > 0){
+                fileOutputStream.write(buffer,0,len);
+            }
+
+            fileInputStream.close();
+            fileOutputStream.close();
+
+        }catch (Exception e){
+
+        }
+    }
+
+    public static boolean isExistsFile(String path){
+        File file = new File(path);
+        return file.exists();
+    }
+
 }
