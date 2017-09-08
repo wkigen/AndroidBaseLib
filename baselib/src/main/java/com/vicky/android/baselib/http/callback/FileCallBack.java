@@ -19,11 +19,11 @@ public abstract class FileCallBack extends Callback<File>
     /**
      * 目标文件存储的文件夹路径
      */
-    private String destFileDir;
+    protected String destFileDir;
     /**
      * 目标文件存储的文件名
      */
-    private String destFileName;
+    protected String destFileName;
 
 
     public FileCallBack(String destFileDir, String destFileName)

@@ -64,6 +64,9 @@ public class FileUtils {
                     continue;
                 result += line + "\r\n";
             }
+            bufferedReader.close();
+            inputReader.close();
+            inputStream.close();
             return result;
         }catch (Exception E){
         }
