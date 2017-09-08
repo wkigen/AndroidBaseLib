@@ -85,7 +85,8 @@ public class NetUtil implements InvocationHandler {
         Map<String,String> headParams = new HashMap<>();
         defaultProcess(method,args,headParams,params);
 
-        headParams.putAll(headMap);
+        if(headMap != null)
+            headParams.putAll(headMap);
 
         if (method.isAnnotationPresent(POST.class)) {
             POST post = method.getAnnotation(POST.class);
