@@ -270,6 +270,9 @@ public class MMCQ {
             }
             VBox[] vboxes = medianCutApply(histo, vbox);
 
+            if (vboxes == null)
+                return new Object[]{lh, nColors, niters};
+
             VBox vbox1 = vboxes[0];
             VBox vbox2 = vboxes[1];
 
